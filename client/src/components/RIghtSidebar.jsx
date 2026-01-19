@@ -17,7 +17,7 @@ const RIghtSidebar = () => {
 
 
     return selectedUser ? (
-        <div className={`h-full bg-slate-800 border-l border-slate-700/50 text-white w-full flex flex-col`}>
+        <div className={`h-full bg-slate-800 text-white w-full flex flex-col`}>
 
             {/* User Profile Header */}
             <div className="pt-10 pb-6 px-4 flex flex-col items-center gap-3">

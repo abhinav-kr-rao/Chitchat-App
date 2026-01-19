@@ -93,8 +93,8 @@ const ChatComponent = () => {
                 </div>
             </div>
 
-            {/* Messages Area */}
-            <div id='chat-area' className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent pb-24">
+            {/* Messages Area - Flex 1 to take available space */}
+            <div id='chat-area' className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                 {messages.map((msg, index) => {
                     const isMyMessage = msg.senderId === authUser._id;
                     return (
@@ -130,9 +130,9 @@ const ChatComponent = () => {
                 <div ref={scrollEnd} className=""></div>
             </div>
 
-            {/* Message Input Area */}
-            <div id='typing-area' className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-900 to-transparent">
-                <div className="max-w-4xl mx-auto flex items-center gap-2 bg-slate-800 p-2 rounded-full border border-slate-700 shadow-xl shadow-black/20">
+            {/* Message Input Area - Relative/Sticky at bottom naturally */}
+            <div id='typing-area' className="p-4 bg-slate-900/50 backdrop-blur-md border-t border-slate-700/50">
+                <div className="w-full flex items-center gap-2 bg-slate-800 p-2 rounded-full border border-slate-700 shadow-xl shadow-black/20">
                     <div className="flex-1 flex items-center gap-2 pl-3">
                         <input onChange={handleSendImage} type="file" id='image' accept='image/png,image/jpeg' hidden />
                         <label htmlFor="image" className="p-2 rounded-full hover:bg-slate-700 text-slate-400 hover:text-indigo-400 cursor-pointer transition-colors">
@@ -149,16 +149,16 @@ const ChatComponent = () => {
                             placeholder='Type a message...'
                             className='flex-1 bg-transparent text-sm text-slate-200 placeholder-slate-500 border-none outline-none'
                         />
+                        <button
+                            onClick={handleSendMessage}
+                            className={`p-3 rounded-full transition-all duration-200 ${input.trim() ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500' : 'bg-slate-700 text-slate-500 cursor-not-allowed'}`}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                                <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                            </svg>
+                        </button>
                     </div>
 
-                    <button
-                        onClick={handleSendMessage}
-                        className={`p-3 rounded-full transition-all duration-200 ${input.trim() ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500' : 'bg-slate-700 text-slate-500 cursor-not-allowed'}`}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>

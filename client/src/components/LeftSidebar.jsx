@@ -25,7 +25,7 @@ const LeftSidebar = () => {
 
     const navigate = useNavigate();
     return (
-        <div className={`h-full flex flex-col bg-slate-800 border-r border-slate-700 ${selectedUser ? `max-md:hidden` : "w-full"}`}>
+        <div className={`h-full flex flex-col bg-slate-800 ${selectedUser ? `max-md:hidden` : "w-full"}`}>
             {/* Header Section */}
             <div className="p-4 sm:p-6 border-b border-slate-700/50">
                 <div className="flex justify-between items-center mb-6">

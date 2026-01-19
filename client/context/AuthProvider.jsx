@@ -10,7 +10,10 @@ axios.defaults.baseURL = backendURL;
 
 export const AuthProvider = ({ children }) => {
 
-    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [token, setToken] = useState(() => {
+        const storedToken = localStorage.getItem("token");
+        return (storedToken && storedToken !== "undefined") ? storedToken : null;
+    });
     const [authUser, setAuthUser] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [socket, setSocket] = useState(null);
@@ -107,10 +110,14 @@ export const AuthProvider = ({ children }) => {
 
         if (token) {
             axios.defaults.headers.common["token"] = token;
+        } else {
+            // Clean up if token is null/invalid
+            delete axios.defaults.headers.common["token"];
+            localStorage.removeItem("token");
         }
 
         checkAuth();
-    }, [])
+    }, [token])
 
 
 
