@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 // Middleware to protect route
 // if user is authenticated then give access
+const secretKey = process.env.JWT_SECRET;
 export const protectRoute = async (req, res, next) => {
   //  next is the next controller function
   try {
@@ -15,11 +16,19 @@ export const protectRoute = async (req, res, next) => {
     if (!token) {
       return res.json({ success: false, message: "No token provided" });
     }
+
+    // console.log('line 20 success');
+
     // Removing "Bearer " prefix if present
     if (token.startsWith("Bearer ")) {
       token = token.slice(7);
     }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log('Token received:', token)
+    const decoded = jwt.verify(token, secretKey);
+
+    // console.log('decoded is ', decoded);
+
+    // console.log('line 26 success');
 
     const user = await User.findById(decoded.userId).select("-password");
 

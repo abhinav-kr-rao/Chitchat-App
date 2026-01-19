@@ -12,13 +12,13 @@ const HomePage = () => {
 
 
     return (
-        <div className=' border w-full h-screen sm:px-[15%] sm:py-[5%]'>
-            <div className={`grid grid-cols-1 relative border-2 border-green-500 overflow-hidden rounded-2xl h-[100%]  
-                ${selectedUser ? `md:grid-cols-[1fr_1.5fr_1fr] xl:grid-cols-[1fr_2fr_1fr]` : `md:grid-cols-2`}`}>
+        <div className='w-full h-screen bg-slate-900 flex items-center justify-center p-4 sm:p-6 md:p-8'>
+            <div className={`grid grid-cols-1 w-full max-w-[1600px] h-full md:h-[90vh] bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700
+                ${selectedUser ? `md:grid-cols-[280px_1fr_280px] lg:grid-cols-[320px_1fr_320px]` : `md:grid-cols-[320px_1fr]`}`}>
 
                 <LeftSidebar />
                 <ChatComponent />
-                <RIghtSidebar />
+                {selectedUser && <div className='hidden md:block border-l border-slate-700 bg-slate-900/50'> <RIghtSidebar /> </div>}
             </div>
         </div>
     )

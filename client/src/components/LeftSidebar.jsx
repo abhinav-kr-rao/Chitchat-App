@@ -17,25 +17,6 @@ const LeftSidebar = () => {
 
     const filteredUsers = input ? users.filter((user) => user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
 
-    if (filteredUsers) {
-        console.log("Got users", filteredUsers);
-    }
-    else {
-        console.log("Error get users");
-
-    }
-    if (selectedUser) {
-        console.log("Current user", selectedUser);
-
-    }
-    else {
-        console.log("Not getting selected user");
-
-    }
-
-    console.log("Unseen msgs", unseenMsgs);
-
-
     useEffect(() => {
         getUsers();
 
@@ -44,64 +25,94 @@ const LeftSidebar = () => {
 
     const navigate = useNavigate();
     return (
-        <div className={` bg-violet-700 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${selectedUser ? `max-md:hidden` : ""}`}>
-            <div className=" pb-5">
-                <div className=" flex justify-between items-center">
-                    <img src="/appIcon.png" alt='logo' className=' max-w-40 w-20 h-auto rounded-2xl' />
-                    <div className=" relative py-2 group">
-                        <img src='/userLogo.png' alt='menu' className=' max-h-5 cursor-pointer' />
-                        <div className=" absolute top-full right-0 z-20 w-32 p-5 rounded-md  border border-yellow-400 text-blue-600 hidden group-hover:block">
-                            <p onClick={() => navigate('/profile')} className=' text-sm cursor-pointer'>
-                                Edit Profile
-                            </p>
-                            <hr className=' my-2 border-t border-black' />
-                            <p onClick={() => logout()} className=' cursor-pointer text-sm'>
-                                Logout
-                            </p>
+        <div className={`h-full flex flex-col bg-slate-800 border-r border-slate-700 ${selectedUser ? `max-md:hidden` : "w-full"}`}>
+            {/* Header Section */}
+            <div className="p-4 sm:p-6 border-b border-slate-700/50">
+                <div className="flex justify-between items-center mb-6">
+                    <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                            <span className="text-white font-bold text-xl">C</span>
+                        </div>
+                        <h1 className="text-xl font-bold text-white tracking-tight">ChitChat</h1>
+                    </div>
+
+                    <div className="relative group">
+                        <button className="p-2 rounded-full hover:bg-slate-700 transition-colors">
+                            <img src='/userLogo.png' alt='menu' className='w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity' />
+                        </button>
+
+                        <div className="absolute top-full right-0 mt-2 w-48 py-2 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-20 hidden group-hover:block">
+                            <button onClick={() => navigate('/profile')} className='w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors flex items-center gap-2'>
+                                <span>Edit Profile</span>
+                            </button>
+                            <div className='my-1 border-t border-slate-700/50'></div>
+                            <button onClick={() => logout()} className='w-full text-left px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-500/10 transition-colors flex items-center gap-2'>
+                                <span>Logout</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div id='search-bar' className=" mt-5 bg-gray-500 rounded-full flex items-center gap-2 py-3 px-4">
-                    <img src="/searchIcon.jpg" alt="Search" className='w-5 m-1 h-auto rounded-4xl' />
-                    <input onChange={(e) => setInput(e.target.value)} type="text" name="" id="input"
-                        className=' bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8] flex-1'
-                        placeholder='Search User...' />
+                <div className="relative">
+                    <input
+                        onChange={(e) => setInput(e.target.value)}
+                        type="text"
+                        placeholder='Search users...'
+                        className='w-full bg-slate-900/50 border border-slate-700 text-slate-200 text-sm rounded-xl pl-10 pr-4 py-3 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-slate-500'
+                    />
+                    <img src="/searchIcon.jpg" alt="Search" className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 rounded-full' />
                 </div>
             </div>
-            <div id=' user-list' className=" flex flex-col">
+
+            {/* Users List */}
+            <div className="flex-1 overflow-y-auto p-3 space-y-1 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                 {filteredUsers.map((user, idx) => {
-                    return (<div onClick={() => {
+                    const isOnline = onlineUsers.includes(user._id);
+                    const isSelected = selectedUser?._id === user._id;
+                    const hasUnseen = unseenMsgs[user._id] > 0;
 
-                        setSelectedUser(user); setUnseenMsgs((prev) => ({ ...prev, [user._id]: 0 }))
-                    }
+                    return (
+                        <div
+                            key={idx}
+                            onClick={() => {
+                                setSelectedUser(user);
+                                setUnseenMsgs((prev) => ({ ...prev, [user._id]: 0 }))
+                            }}
+                            className={`group relative flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200
+                                ${isSelected ? 'bg-indigo-600 shadow-md shadow-indigo-900/20' : 'hover:bg-slate-700/50'}
+                            `}
+                        >
+                            <div className="relative">
+                                <img
+                                    src={user?.profilePic || `/userLogo.png`}
+                                    alt="pic"
+                                    className={`w-12 h-12 rounded-full object-cover border-2 transition-colors ${isSelected ? 'border-indigo-400' : 'border-slate-600 group-hover:border-slate-500'}`}
+                                />
+                                {isOnline && (
+                                    <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 ${isSelected ? 'border-indigo-600 bg-white' : 'border-slate-800 bg-green-500'}`}></span>
+                                )}
+                            </div>
 
-                    } key={idx} className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm
-                     ${selectedUser?._id === user._id && ` bg-amber-600`}`}>
-                        <img src={user?.profilePic || `/userLogo.png`} alt="pic"
-                            className=' w-[35px] h-auto aspect-[1/1] rounded-full' />
-                        <div id='user-name' className=" flex flex-col leading-5">
-                            <p>
-                                {user.fullName}
-                            </p>
-                            {
-                                onlineUsers.includes(user._id) ?
-                                    <span className=' text-green-400 text-xs'>
-                                        Online
-                                    </span> :
-                                    <span className=' text-neutral-400 text-xs'>
-                                        Offline
-                                    </span>
-                            }
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-baseline mb-0.5">
+                                    <h3 className={`font-semibold truncate text-sm ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                                        {user.fullName}
+                                    </h3>
+                                    {hasUnseen && (
+                                        <span className="w-5 h-5 flex items-center justify-center bg-indigo-500 text-white text-[10px] font-bold rounded-full shadow-sm">
+                                            {unseenMsgs[user._id]}
+                                        </span>
+                                    )}
+                                </div>
+                                <p className={`text-xs truncate ${isSelected ? 'text-indigo-200' : 'text-slate-400'}`}>
+                                    {isOnline ? 'Active now' : 'Offline'}
+                                </p>
+                            </div>
                         </div>
-                        {unseenMsgs[user._id] > 0 &&
-                            <p className=' absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-violet-500'>
-                                {unseenMsgs[user._id]}
-                            </p>}
-                    </div>)
+                    )
                 })}
             </div>
-        </div >
+        </div>
     )
 }
 

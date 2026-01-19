@@ -24,74 +24,120 @@ const LoginPage = () => {
     }
 
     return (
-        <div className=' min-h-screen bg-["/bg-image.png"] bg-cover bg-center flex items-center justify-center gap-8 sm:justify-evenly max-sm:flex-col backdrop-blur-2xl'>
-            <img src="/appIcon.png" alt="image" className=' w-[min(30vw,250px)]' />
-            <form onSubmit={handleSubmit} className=' border-2 bg-white/8 text-white border-gray-500 p-6 flex flex-col gap-6 rounded-lg shadow-lg'>
-                <h2 className=' font-medium text-2xl flex justify-between items-center'>
-                    {currState}
-                    {isDataSubmitted && (
-                        <img onClick={() => setIsDataSubmitted(false)}
-                            src="/arrow_icon.png" alt="arrow" className=' w-5 cursor-pointer' />
-                    )
-                    }
-                </h2>
-                {currState === "Sign up" && !isDataSubmitted && (
-                    <input onChange={(e) => setFullName(e.target.value)} value={fullName}
-                        type="text" name="name" className=' p-2 border border-gray-500 rounded-md focus:outline-none'
-                        placeholder='Full Name' required />)
-                }
-                {
-                    !isDataSubmitted && (
-                        <>
-                            <input onChange={(e) => setEmail(e.target.value)} value={email}
-                                type="email" placeholder='Enter email' required className=' p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500' />
-                            <input onChange={(e) => setPassword(e.target.value)} value={password}
-                                type="password" placeholder='Enter password' required className=' p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2' />
-                        </>
-                    )
-                }
-
-                {
-                    currState === 'Sign up' && isDataSubmitted && (
-                        <textarea name="bio" rows={4} onChange={(e) => setBio(e.target.value)} value={bio}
-                            className=' p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
-                            placeholder=' Provide a short bio'>
-
-                        </textarea>
-                    )
-                }
-
-                <button type='submit' className=' py-3 bg-gradient-to-r from-purple-400 to-violet-600 text-white rounded-md cursor-pointer'>
-                    {
-                        currState === "Sign up" ? "Create Account" : "Login"
-                    }
-                </button>
-
-                <div className=" flex items-center gap-2 text-sm text-gray-500">
-                    <input type="checkbox" />
-                    <p>Agree to terms of use and privacy policy</p>
+        <div className='min-h-screen bg-slate-900 flex items-center justify-center p-4'>
+            <div className="w-full max-w-md bg-slate-800 rounded-3xl p-8 shadow-2xl border border-slate-700">
+                <div className="flex flex-col items-center gap-2 mb-8">
+                    <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-600/20 mb-2">
+                        <span className="text-3xl">💬</span>
+                    </div>
+                    <h2 className='text-3xl font-bold text-white tracking-tight'>
+                        {currState === "Sign up" ? "Create Account" : "Welcome Back"}
+                    </h2>
+                    <p className="text-slate-400 text-sm">
+                        {currState === "Sign up" ? "Join our community today" : "Sign in to continue chatting"}
+                    </p>
                 </div>
 
-                <div className=" flex flex-col gap-2">
+                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+                    {currState === "Sign up" && !isDataSubmitted && (
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Full Name</label>
+                            <input
+                                onChange={(e) => setFullName(e.target.value)}
+                                value={fullName}
+                                type="text"
+                                className='w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600'
+                                placeholder='John Doe'
+                                required
+                            />
+                        </div>
+                    )}
+
+                    {!isDataSubmitted && (
+                        <>
+                            <div className="space-y-1">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Email Address</label>
+                                <input
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    type="email"
+                                    placeholder='john@example.com'
+                                    required
+                                    className='w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600'
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Password</label>
+                                <input
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                    type="password"
+                                    placeholder='••••••••'
+                                    required
+                                    className='w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600'
+                                />
+                            </div>
+                        </>
+                    )}
+
+                    {currState === 'Sign up' && isDataSubmitted && (
+                        <div className="space-y-1 animate-in fade-in slide-in-from-right-4 duration-300">
+                            <div className="flex justify-between items-center">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Bio</label>
+                                <button type="button" onClick={() => setIsDataSubmitted(false)} className="text-xs text-indigo-400 hover:text-indigo-300">
+                                    Edit Details
+                                </button>
+                            </div>
+                            <textarea
+                                rows={4}
+                                onChange={(e) => setBio(e.target.value)}
+                                value={bio}
+                                className='w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600 resize-none'
+                                placeholder='Tell us a bit about yourself...'
+                            ></textarea>
+                            <button
+                                type="button"
+                                onClick={() => setIsDataSubmitted(false)}
+                                className="w-full mt-2 py-2 text-sm text-slate-400 hover:text-white transition-colors"
+                            >
+                                ← Back to details
+                            </button>
+                        </div>
+                    )}
+
+                    <div className="pt-4">
+                        <button type='submit' className='w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/20 active:scale-[0.98]'>
+                            {currState === "Sign up"
+                                ? (isDataSubmitted ? "Complete Signup" : "Continue")
+                                : "Sign In"
+                            }
+                        </button>
+                    </div>
+
                     {currState === "Sign up" ? (
-                        <p className=' text-sm text-gray-600'>Already have an account?
-                            <span onClick={() => {
-                                setCurrState("Login"); setIsDataSubmitted(false)
-                            }}
-                                className=' font-medium text-violet-500 cursor-pointer'>Login here</span>
+                        <p className='text-center text-sm text-slate-400 mt-4'>
+                            Already have an account?{' '}
+                            <span
+                                onClick={() => { setCurrState("Login"); setIsDataSubmitted(false) }}
+                                className='font-medium text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors'
+                            >
+                                Login here
+                            </span>
                         </p>
                     ) : (
-                        <p className=' text-sm text-shadow-gray-600'>
-                            Create an account <span onClick={() => {
-                                setCurrState("Sign up");
-
-                            }}
-                                className=' font-medium text-violet-500 cursor-pointer'>Click here</span>
+                        <p className='text-center text-sm text-slate-400 mt-4'>
+                            Don't have an account?{' '}
+                            <span
+                                onClick={() => { setCurrState("Sign up"); }}
+                                className='font-medium text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors'
+                            >
+                                Create one
+                            </span>
                         </p>
                     )}
-                </div>
-            </form >
-        </div >
+                </form>
+            </div>
+        </div>
     )
 }
 
